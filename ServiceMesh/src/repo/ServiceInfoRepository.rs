@@ -2,7 +2,7 @@ use sharedLib::serviceMeshTypes::serviceInfo::ServiceInfo;
 use sqlx::postgres::PgPool;
 use chrono::{Utc, NaiveDateTime};
 
-use crate::traits::serviceInfoRepositoryTraits::ServiceInfoRepositoryTrait;
+use crate::traits::service_info_repository_traits::ServiceInfoRepositoryTrait;
 
 #[derive(Debug)]
 pub struct ServiceInfoRepository {
@@ -65,7 +65,7 @@ impl ServiceInfoRepositoryTrait for ServiceInfoRepository {
         Ok(Some(result))
     }
     
-     async fn update_service_info_health(pool: &sqlx::PgPool) -> Result<(), sqlx::Error> {
+     async fn update_service_info_health(&self,) -> Result<(), sqlx::Error> {
         let current_timestamp: NaiveDateTime = Utc::now().naive_utc();
     
         sqlx::query!(
@@ -75,13 +75,13 @@ impl ServiceInfoRepositoryTrait for ServiceInfoRepository {
             "#,
             current_timestamp.timestamp()
         )
-        .execute(pool)
+        .execute(&self.pool)
         .await?;
     
         Ok(())
     }
 
-     async fn delete_service_info(pool: &sqlx::PgPool, id: &str) -> Result<(), sqlx::Error> {
+     async fn delete_service_info(&self, id: &str) -> Result<(), sqlx::Error> {
         sqlx::query!(
             r#"
             DELETE FROM service_info
@@ -89,7 +89,7 @@ impl ServiceInfoRepositoryTrait for ServiceInfoRepository {
             "#,
             id
         )
-        .execute(pool)
+        .execute(&self.pool)
         .await?;
     
         Ok(())

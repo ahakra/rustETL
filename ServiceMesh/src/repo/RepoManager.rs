@@ -1,4 +1,4 @@
-use crate::traits::serviceInfoRepositoryTraits::ServiceInfoRepositoryTrait;
+use crate::traits::service_info_repository_traits::ServiceInfoRepositoryTrait;
 use sharedLib::serviceMeshTypes::serviceInfo::ServiceInfo;
 use sqlx::postgres::PgPool;
 pub struct RepoManager<T: ServiceInfoRepositoryTrait> {

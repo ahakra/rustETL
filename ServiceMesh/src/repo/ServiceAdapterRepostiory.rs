@@ -3,17 +3,18 @@ use sharedLib::serviceMeshTypes::ServiceAdapters::ServiceAdapters;
 use sharedLib::serviceMeshTypes::protocolUsed::ProtocolUsed;
 use sqlx::postgres::PgPool;
 use chrono::{Utc, NaiveDateTime};
+use crate::traits::service_adapter_repository_trait::ServiceAdapterRepositoryTrait;
 
 #[derive(Debug)]
 pub struct ServiceAdapterRepostiory {
     pool: PgPool,
 }
 
-impl ServiceAdapterRepostiory {
-    pub fn new(pool: PgPool) -> Self {
+impl ServiceAdapterRepositoryTrait for ServiceAdapterRepostiory {
+     fn new(pool: PgPool) -> Self {
         Self { pool }
     }
-    async fn create_service_adapter(&self, service: &ServiceAdapters) -> Result<(), sqlx::Error> {
+     async fn create_service_adapter(&self, service: &ServiceAdapters) -> Result<(), sqlx::Error> {
         sqlx::query!(
             r#"
             INSERT INTO service_adapter (id, address, protocol_used, protocol_description, service_info_id)
@@ -65,7 +66,7 @@ impl ServiceAdapterRepostiory {
         Ok(Some(result))
     }
 
-    async fn delete_service_adapter(pool: &sqlx::PgPool, id: &str) -> Result<(), sqlx::Error> {
+    async fn delete_service_adapter(   &self, id: &str) -> Result<(), sqlx::Error> {
         sqlx::query!(
             r#"
             DELETE FROM service_adapter
@@ -73,7 +74,7 @@ impl ServiceAdapterRepostiory {
             "#,
             id
         )
-        .execute(pool)
+        .execute(&self.pool)
         .await?;
     
         Ok(())

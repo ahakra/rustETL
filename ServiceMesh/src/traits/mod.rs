@@ -1,1 +1,2 @@
-pub mod serviceInfoRepositoryTraits;
+pub mod service_info_repository_traits;
+pub mod service_adapter_repository_trait;

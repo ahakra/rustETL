@@ -8,7 +8,7 @@ use dotenv::dotenv;
 
 use sqlx::postgres::{PgConnectOptions, PgPool, PgPoolOptions};
 
-use crate::traits::serviceInfoRepositoryTraits::ServiceInfoRepositoryTrait;
+use crate::traits::service_info_repository_traits::ServiceInfoRepositoryTrait;
 #[tokio::main]
 async fn main()  {
     dotenv::dotenv().ok();

@@ -2,4 +2,4 @@
 members = [
    "ServiceMesh"
    
-]
+, "sharedLib"]

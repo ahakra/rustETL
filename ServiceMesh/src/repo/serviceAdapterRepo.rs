@@ -1,5 +1,6 @@
 use sqlx::postgres::PgPool;
 use sqlx::types::Uuid;
+extern crate sharedLib;
 
 #[derive(Debug)]
 pub struct ServiceRepository {

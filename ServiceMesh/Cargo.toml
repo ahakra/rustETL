@@ -12,3 +12,5 @@ serde_json = "1.0.113"
 serde_derive ={version = "1.0.196"}
 sqlx = {version = "0.7.3", features = [ "runtime-tokio-rustls", "migrate", "postgres" ] }
 sharedLib = { path = "../sharedLib" }
+tokio = { version = "1.35", features = ["full"] }
+dotenv ="0.15.0"

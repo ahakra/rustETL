@@ -1,26 +1,23 @@
 pub mod repo;
-use std::env;
+use std::{env, str::FromStr};
+use tokio;
+use dotenv::dotenv;
+
+
 
 use sqlx::postgres::{PgConnectOptions, PgPool, PgPoolOptions};
-fn main()  {
-    
+#[tokio::main]
+async fn main()  {
+    dotenv::dotenv().ok();
     let database_url = env::var("DATABASE_URL").expect("Expected DATABASE_URL in the environment"); 
-	
-     // Create a connection pool with the specified database URL
-    //  let pool = PgPoolOptions::new()
-    //      .max_connections(5)
-    //      .connect(database_url)
-    //      ;
- 
-    // Create PostgreSQL connection options with the specified database URL
-    let options = PgConnectOptions::new()
-        .host("localhost")
-        .port(5432)
-        .database("database_name")
-        .username("username")
-        .password("password");
+	println!("database_url {}", database_url);
+    
+    let options = PgConnectOptions::from_str(&database_url).unwrap();
 
     // Create a connection pool using the specified options
-    let pool = sqlx::PgPool::connect_with(options);
+    let pool = sqlx::PgPool::connect_with(options).await.unwrap();
+    let new_service_repo = repo::serviceAdapterRepo::ServiceRepository::new(pool);
+    let service = new_service_repo.get_service_by_id("aa".to_string()).await.unwrap();
+    println!("{:?}", service);
    
  }

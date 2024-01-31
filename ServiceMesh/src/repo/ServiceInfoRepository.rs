@@ -2,17 +2,19 @@ use sharedLib::serviceMeshTypes::serviceInfo::ServiceInfo;
 use sqlx::postgres::PgPool;
 use chrono::{Utc, NaiveDateTime};
 
+use crate::traits::ServiceInfoRepostoryTrait::ServiceInfoRepositoryImpl;
+
 #[derive(Debug)]
 pub struct ServiceInfoRepository {
     pool: PgPool,
 }
 
-impl ServiceInfoRepository {
-    pub fn new(pool: PgPool) -> Self {
+impl ServiceInfoRepositoryImpl for ServiceInfoRepository {
+    fn new(pool: PgPool) -> Self {
         Self { pool }
     }
 
-    pub async fn create_service_info(&self, service: &ServiceInfo) -> Result<(), sqlx::Error> {
+     async fn create_service_info(&self, service: &ServiceInfo) -> Result<(), sqlx::Error> {
       
         sqlx::query!(
             r#"
@@ -29,7 +31,7 @@ impl ServiceInfoRepository {
         Ok(())
     }
 
-    pub async fn get_service_info_by_id(&self, id: String) -> Result<Option<ServiceInfo>, sqlx::Error> {
+     async fn get_service_info_by_id(&self, id: String) -> Result<Option<ServiceInfo>, sqlx::Error> {
         let result = sqlx::query_as!(
             ServiceInfo,
             r#"
@@ -44,7 +46,7 @@ impl ServiceInfoRepository {
         Ok(result)
     }
     
-    pub async fn get_service_info_by_type(
+     async fn get_service_info_by_type(
         &self,
         service_type: String,
     ) -> Result<Option<Vec<ServiceInfo>>, sqlx::Error> {
@@ -63,7 +65,7 @@ impl ServiceInfoRepository {
         Ok(Some(result))
     }
     
-    pub async fn update_service_info_health(pool: &sqlx::PgPool) -> Result<(), sqlx::Error> {
+     async fn update_service_info_health(pool: &sqlx::PgPool) -> Result<(), sqlx::Error> {
         let current_timestamp: NaiveDateTime = Utc::now().naive_utc();
     
         sqlx::query!(
@@ -79,7 +81,7 @@ impl ServiceInfoRepository {
         Ok(())
     }
 
-    pub async fn delete_service_info(pool: &sqlx::PgPool, id: &str) -> Result<(), sqlx::Error> {
+     async fn delete_service_info(pool: &sqlx::PgPool, id: &str) -> Result<(), sqlx::Error> {
         sqlx::query!(
             r#"
             DELETE FROM service_info

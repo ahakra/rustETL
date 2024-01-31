@@ -1,12 +1,13 @@
 use chrono::{Utc, DateTime, TimeZone};
 use super::ServiceAdapters::ServiceAdapters;
 use serde_derive::{Deserialize, Serialize};
+use sqlx::prelude::*;
 
-
-#[derive(Deserialize, Serialize, Debug, Clone)]
+#[derive(Deserialize, Serialize, Debug, Clone, sqlx::FromRow)]
 pub struct ServiceInfo {
-    Id:String,
-    ServiceType :String,
-    UpdateTime:i64,
-    Adapters: Vec<ServiceAdapters>,
+  #[sqlx(rename = "id")]
+    pub id:String,
+    pub service_type :String,
+    pub  update_time:i64,
+  //  Adapters: Vec<ServiceAdapters>,
   }

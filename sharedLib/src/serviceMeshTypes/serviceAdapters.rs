@@ -4,9 +4,9 @@ use serde_derive::{Deserialize, Serialize};
 
 #[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct ServiceAdapters{
-    id :String,
-    address :String,
-    protocol_used:ProtocolUsed ,
-    ProtocolDescription :String,
-    ServiceInfoId :String,
+    pub  id :String,
+    pub address :String,
+    pub  protocol_used:ProtocolUsed ,
+    pub    ProtocolDescription :String,
+    pub   ServiceInfoId :String,
 }

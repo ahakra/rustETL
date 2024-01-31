@@ -8,7 +8,7 @@ use dotenv::dotenv;
 
 use sqlx::postgres::{PgConnectOptions, PgPool, PgPoolOptions};
 
-use crate::traits::ServiceInfoRepostoryTrait::ServiceInfoRepositoryImpl;
+use crate::traits::serviceInfoRepositoryTraits::ServiceInfoRepositoryTrait;
 #[tokio::main]
 async fn main()  {
     dotenv::dotenv().ok();
@@ -25,6 +25,6 @@ async fn main()  {
 
    // let repository = ServiceInfoRepositoryImpl::new(pool);
     let manager = repo::RepoManager::RepoManager::new(new_service_repo) ;
-    let r = manager.get_service_info_by_id("aa".to_string()).await.unwrap();
+    let r = manager.get_service_info_by_id("bb".to_string()).await.unwrap();
     println!("{:?}", r);
  }

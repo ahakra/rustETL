@@ -1,6 +1,6 @@
 use sharedLib::serviceMeshTypes::serviceInfo::ServiceInfo;
 use sqlx::postgres::PgPool;
-pub trait ServiceInfoRepositoryImpl {
+pub trait ServiceInfoRepositoryTrait {
     fn new(pool: PgPool) -> Self;
      async fn create_service_info(&self, service: &ServiceInfo) -> Result<(), sqlx::Error>;
      async fn get_service_info_by_id(&self, id: String) -> Result<Option<ServiceInfo>, sqlx::Error>;

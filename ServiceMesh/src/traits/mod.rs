@@ -1,1 +1,1 @@
-pub mod ServiceInfoRepostoryTrait;
+pub mod serviceInfoRepositoryTraits;

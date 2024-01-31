@@ -2,14 +2,14 @@ use sharedLib::serviceMeshTypes::serviceInfo::ServiceInfo;
 use sqlx::postgres::PgPool;
 use chrono::{Utc, NaiveDateTime};
 
-use crate::traits::ServiceInfoRepostoryTrait::ServiceInfoRepositoryImpl;
+use crate::traits::serviceInfoRepositoryTraits::ServiceInfoRepositoryTrait;
 
 #[derive(Debug)]
 pub struct ServiceInfoRepository {
     pool: PgPool,
 }
 
-impl ServiceInfoRepositoryImpl for ServiceInfoRepository {
+impl ServiceInfoRepositoryTrait for ServiceInfoRepository {
     fn new(pool: PgPool) -> Self {
         Self { pool }
     }

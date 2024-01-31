@@ -1,11 +1,11 @@
-use crate::traits::ServiceInfoRepostoryTrait::ServiceInfoRepositoryImpl;
+use crate::traits::serviceInfoRepositoryTraits::ServiceInfoRepositoryTrait;
 use sharedLib::serviceMeshTypes::serviceInfo::ServiceInfo;
 use sqlx::postgres::PgPool;
-pub struct RepoManager<T: ServiceInfoRepositoryImpl> {
+pub struct RepoManager<T: ServiceInfoRepositoryTrait> {
     repository: T,
 }
 
-impl<T: ServiceInfoRepositoryImpl> RepoManager<T> {
+impl<T: ServiceInfoRepositoryTrait> RepoManager<T> {
     pub fn new(repository: T) -> Self {
         Self { repository }
     }

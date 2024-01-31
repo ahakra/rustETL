@@ -6,7 +6,7 @@ use serde_derive::{Deserialize, Serialize};
 pub struct ServiceAdapters{
     pub  id :String,
     pub address :String,
-    pub  protocol_used:ProtocolUsed ,
-    pub    ProtocolDescription :String,
-    pub   ServiceInfoId :String,
+    pub    protocol_used:ProtocolUsed ,
+    pub    protocol_description :String,
+    pub   service_info_id :String,
 }

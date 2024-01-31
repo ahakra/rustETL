@@ -16,8 +16,8 @@ async fn main()  {
 
     // Create a connection pool using the specified options
     let pool = sqlx::PgPool::connect_with(options).await.unwrap();
-    let new_service_repo = repo::serviceAdapterRepo::ServiceRepository::new(pool);
-    let service = new_service_repo.get_service_by_id("aa".to_string()).await.unwrap();
+    let new_service_repo = repo::ServiceInfoRepository::ServiceInfoRepository::new(pool);
+    let service = new_service_repo.get_service_info_by_id("aa".to_string()).await.unwrap();
     println!("{:?}", service);
    
  }

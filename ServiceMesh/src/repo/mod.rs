@@ -1,1 +1,1 @@
-pub mod serviceAdapterRepo;
+pub mod ServiceInfoRepository;

@@ -1,14 +1,17 @@
 pub mod repo;
 pub mod traits;
+pub mod domain;
 use std::{env, str::FromStr};
 use tokio;
-use dotenv::dotenv;
 
 
 
-use sqlx::postgres::{PgConnectOptions, PgPool, PgPoolOptions};
 
-use crate::traits::{service_adapter_repository_trait::ServiceAdapterRepositoryTrait, service_info_repository_traits::ServiceInfoRepositoryTrait};
+use sqlx::postgres::PgConnectOptions;
+
+use crate::traits:: {repo_manager_trait::RepoManagerTrait,
+                     service_adapter_repository_trait::ServiceAdapterRepositoryTrait,
+                     service_info_repository_traits::ServiceInfoRepositoryTrait};
 #[tokio::main]
 async fn main()  {
     dotenv::dotenv().ok();
@@ -26,6 +29,6 @@ async fn main()  {
 
     
     let manager = repo::RepoManager::RepoManager::new(new_service_info_repo,new_service_adapter_repo) ;
-    let r = manager.get_service_info_by_id("aa".to_string()).await.unwrap();
-    println!("{:?}", r);
+   // let r = manager.get_service_info_by_id("aa".to_string()).await.unwrap();
+   // println!("{:?}", r);
  }

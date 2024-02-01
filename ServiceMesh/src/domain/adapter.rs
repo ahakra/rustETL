@@ -1,6 +1,6 @@
 use sharedLib::serviceMeshTypes::ServiceAdapters::ServiceAdapters;
 
-use crate:: traits::{service_adapter_domain_trait::ServiceAdapterDomainTrait, service_adapter_repository_trait::ServiceAdapterRepositoryTrait};
+use crate:: traits::{domain::ServiceAdapterDomainTrait, repository::ServiceAdapterRepositoryTrait};
 
 pub struct ServiceAdapterDomain<T: ServiceAdapterRepositoryTrait> {
     repo: T,

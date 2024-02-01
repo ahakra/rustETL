@@ -1,2 +1,2 @@
-pub mod ServiceInfoRepository;
-pub mod ServiceAdapterRepostiory;
+pub mod info;
+pub mod adapters;

@@ -1,4 +1,4 @@
-use crate:: traits::{service_info_repository_traits::ServiceInfoRepositoryTrait, service_info_domain_trait::ServiceInfoDomainTrait};
+use crate:: traits::{repository::ServiceInfoRepositoryTrait, domain::ServiceInfoDomainTrait};
 use sharedLib::serviceMeshTypes::serviceInfo::ServiceInfo;
 
 pub struct ServiceInfoDomain<T: ServiceInfoRepositoryTrait> {

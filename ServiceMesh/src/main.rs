@@ -9,8 +9,8 @@ use tokio;
 
 use sqlx::postgres::PgConnectOptions;
 
-use crate::{domain::service_info_domain::ServiceInfoDomain, traits:: {
-                     service_adapter_repository_trait::ServiceAdapterRepositoryTrait, service_info_domain_trait::ServiceInfoDomainTrait, service_info_repository_traits::ServiceInfoRepositoryTrait}};
+use crate::{domain::info::ServiceInfoDomain, traits:: {
+                     repository::ServiceAdapterRepositoryTrait, domain::ServiceInfoDomainTrait, repository::ServiceInfoRepositoryTrait}};
 #[tokio::main]
 async fn main()  {
     dotenv::dotenv().ok();
@@ -21,8 +21,8 @@ async fn main()  {
 
     // Create a connection pool using the specified options
     let pool = sqlx::PgPool::connect_with(options).await.unwrap();
-    let new_service_info_repo = repo::ServiceInfoRepository::ServiceInfoRepository::new(pool.clone());
-    let new_service_adapter_repo = repo::ServiceAdapterRepostiory::ServiceAdapterRepostiory::new(pool.clone());
+    let new_service_info_repo = repo::info::ServiceInfoRepository::new(pool.clone());
+    let new_service_adapter_repo = repo::adapters::ServiceAdapterRepostiory::new(pool.clone());
  
     let serviceInfodomain = ServiceInfoDomain::new(new_service_info_repo);
     let xx = serviceInfodomain.get_service_info_by_id("aa".to_string()).await;

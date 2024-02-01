@@ -3,7 +3,7 @@ use sharedLib::serviceMeshTypes::ServiceAdapters::ServiceAdapters;
 use sharedLib::serviceMeshTypes::protocolUsed::ProtocolUsed;
 use sqlx::postgres::PgPool;
 use chrono::{Utc, NaiveDateTime};
-use crate::traits::service_adapter_repository_trait::ServiceAdapterRepositoryTrait;
+use crate::traits::repository::ServiceAdapterRepositoryTrait;
 
 #[derive(Debug)]
 pub struct ServiceAdapterRepostiory {

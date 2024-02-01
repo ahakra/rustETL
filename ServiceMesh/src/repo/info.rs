@@ -2,7 +2,7 @@ use sharedLib::serviceMeshTypes::serviceInfo::ServiceInfo;
 use sqlx::postgres::PgPool;
 use chrono::{Utc, NaiveDateTime};
 
-use crate::traits::service_info_repository_traits::ServiceInfoRepositoryTrait;
+use crate::traits::repository::ServiceInfoRepositoryTrait;
 
 #[derive(Debug)]
 pub struct ServiceInfoRepository {

@@ -8,7 +8,7 @@ use dotenv::dotenv;
 
 use sqlx::postgres::{PgConnectOptions, PgPool, PgPoolOptions};
 
-use crate::traits::service_info_repository_traits::ServiceInfoRepositoryTrait;
+use crate::traits::{service_adapter_repository_trait::ServiceAdapterRepositoryTrait, service_info_repository_traits::ServiceInfoRepositoryTrait};
 #[tokio::main]
 async fn main()  {
     dotenv::dotenv().ok();
@@ -19,12 +19,13 @@ async fn main()  {
 
     // Create a connection pool using the specified options
     let pool = sqlx::PgPool::connect_with(options).await.unwrap();
-    let new_service_repo = repo::ServiceInfoRepository::ServiceInfoRepository::new(pool);
+    let new_service_info_repo = repo::ServiceInfoRepository::ServiceInfoRepository::new(pool.clone());
+    let new_service_adapter_repo = repo::ServiceAdapterRepostiory::ServiceAdapterRepostiory::new(pool.clone());
    // let service = new_service_repo.get_service_info_by_id("aa".to_string()).await.unwrap();
    // println!("{:?}", service);
 
     
-    let manager = repo::RepoManager::RepoManager::new(new_service_repo) ;
-    let r = manager.get_service_info_by_id("bb".to_string()).await.unwrap();
+    let manager = repo::RepoManager::RepoManager::new(new_service_info_repo,new_service_adapter_repo) ;
+    let r = manager.get_service_info_by_id("aa".to_string()).await.unwrap();
     println!("{:?}", r);
  }

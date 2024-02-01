@@ -4,7 +4,7 @@ use chrono::{Utc, NaiveDateTime};
 
 use crate::traits::repository::ServiceInfoRepositoryTrait;
 
-#[derive(Debug)]
+#[derive(Debug,Clone)]
 pub struct ServiceInfoRepository {
     pool: PgPool,
 }

@@ -1,11 +1,11 @@
 use sharedLib::serviceMeshTypes::serviceInfo::ServiceInfo;
-use sharedLib::serviceMeshTypes::ServiceAdapters::ServiceAdapters;
+use sharedLib::serviceMeshTypes::serviceAdapters::ServiceAdapters;
 use sharedLib::serviceMeshTypes::protocolUsed::ProtocolUsed;
 use sqlx::postgres::PgPool;
 use chrono::{Utc, NaiveDateTime};
 use crate::traits::repository::ServiceAdapterRepositoryTrait;
 
-#[derive(Debug)]
+#[derive(Debug,Clone)]
 pub struct ServiceAdapterRepostiory {
     pool: PgPool,
 }
@@ -77,6 +77,20 @@ impl ServiceAdapterRepositoryTrait for ServiceAdapterRepostiory {
         .execute(&self.pool)
         .await?;
     
+        Ok(())
+    }
+
+    async fn delete_service_adapter_by_service_info(   &self, id: &str) -> Result<(), sqlx::Error> {
+        sqlx::query!(
+            r#"
+            DELETE FROM service_adapter
+            WHERE service_info_id = $1
+            "#,
+            id
+        )
+            .execute(&self.pool)
+            .await?;
+
         Ok(())
     }
 }

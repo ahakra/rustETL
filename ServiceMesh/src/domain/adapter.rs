@@ -1,4 +1,4 @@
-use sharedLib::serviceMeshTypes::ServiceAdapters::ServiceAdapters;
+use sharedLib::serviceMeshTypes::serviceAdapters::ServiceAdapters;
 
 use crate:: traits::{domain::ServiceAdapterDomainTrait, repository::ServiceAdapterRepositoryTrait};
 
@@ -7,7 +7,7 @@ pub struct ServiceAdapterDomain<T: ServiceAdapterRepositoryTrait> {
 }
 
 impl <T>ServiceAdapterDomainTrait<T> for  ServiceAdapterDomain<T> where T :ServiceAdapterRepositoryTrait {
-    fn new(repo: T) -> Self {
+     fn new(repo: T) -> Self {
         Self { repo }
     }
 
@@ -28,5 +28,8 @@ impl <T>ServiceAdapterDomainTrait<T> for  ServiceAdapterDomain<T> where T :Servi
 
     async fn delete_service_adapter(   &self, id: &str) -> Result<(), sqlx::Error> {
         self.repo.delete_service_adapter(id).await
+    }
+    async fn delete_service_adapter_by_service_info_id(   &self, id: &str) -> Result<(), sqlx::Error> {
+        self.repo.delete_service_adapter_by_service_info(&id).await
     }
 }

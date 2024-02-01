@@ -1,5 +1,5 @@
 
-use sharedLib::serviceMeshTypes::ServiceAdapters::ServiceAdapters;
+use sharedLib::serviceMeshTypes::serviceAdapters::ServiceAdapters;
 use sharedLib::serviceMeshTypes::serviceInfo::ServiceInfo;
 
 pub trait ServiceAdapterDomainTrait<T> {
@@ -14,6 +14,7 @@ pub trait ServiceAdapterDomainTrait<T> {
     ) -> Result<Option<Vec<ServiceAdapters>>, sqlx::Error>;
 
     async fn delete_service_adapter(   &self, id: &str) -> Result<(), sqlx::Error>;
+    async fn delete_service_adapter_by_service_info_id(   &self, id: &str) -> Result<(), sqlx::Error>;
 }
 
 

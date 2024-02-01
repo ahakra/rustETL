@@ -1,5 +1,5 @@
 use chrono::{Utc, DateTime, TimeZone};
-use super::ServiceAdapters::ServiceAdapters;
+use super::serviceAdapters::ServiceAdapters;
 use serde_derive::{Deserialize, Serialize};
 use sqlx::prelude::*;
 

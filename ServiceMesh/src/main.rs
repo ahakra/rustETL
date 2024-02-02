@@ -39,6 +39,7 @@ async fn main() {
 
 
     let info_prefix = warp::path("info");
+    let adapter_prefix = warp::path("adapter");
 
     let get_info_by_id = warp::get()
         .and(info_prefix.clone().and(warp::path("id")))
@@ -73,9 +74,61 @@ async fn main() {
         .and(service_info_domain.clone())
         .and(warp::body::json())
         .and_then(crate::routes::info::create_service_info);
+    
+   
 
 
-  let routes = get_info_by_id.or(get_info_by_type).or(update_info_health).or(delete_service_info);
+  let info_routes = get_info_by_id
+                                                    .or(get_info_by_type)
+                                                    .or(update_info_health)
+                                                    .or(delete_service_info)
+                                                    .or(create_service_info);
+
+    
+    let create_service_adapter = warp::post()
+    .and(adapter_prefix.clone())
+    .and(warp::path::end())
+    .and(service_adapter_domain.clone())
+    .and(warp::body::json())
+    .and_then(crate::routes::adapters::create_service_adapter);
+
+    let get_adapter_by_id = warp::get()
+    .and(adapter_prefix.clone().and(warp::path("id")))
+    .and(warp::path::param::<String>())
+    .and(warp::path::end())
+    .and(service_adapter_domain.clone())
+    .and_then(crate::routes::adapters::get_adapter_by_id);
+
+    let delete_service_adapter = warp::delete()
+    .and(adapter_prefix.and(warp::path::param::<String>()))
+    .and(warp::path::end())
+    .and(service_adapter_domain.clone())
+    .and_then(crate::routes::adapters::delete_service_adapter);
+
+    
+    let delete_service_adapter_by_service_info = warp::delete()
+    .and(adapter_prefix.clone().and(warp::path("info")))
+    .and(warp::path::param::<String>())
+    .and(warp::path::end())
+    .and(service_adapter_domain.clone())
+    .and_then(crate::routes::adapters::delete_service_adapter_by_info_id);
+
+      
+    let get_service_adapter_by_service_info = warp::get()
+    .and(adapter_prefix.clone().and(warp::path("info")))
+    .and(warp::path::param::<String>())
+    .and(warp::path::end())
+    .and(service_adapter_domain.clone())
+    .and_then(crate::routes::adapters::get_service_adapter_by_info_id);
+
+
+    let adapter_routes = create_service_adapter
+                        .or(get_adapter_by_id)
+                        .or(delete_service_adapter)
+                        .or(delete_service_adapter_by_service_info)
+                        .or(get_service_adapter_by_service_info);
+
+  let routes = info_routes.or(adapter_routes);
 
     warp::serve(routes)
         .run(([127, 0, 0, 1], 3030))

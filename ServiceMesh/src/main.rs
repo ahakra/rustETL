@@ -45,34 +45,34 @@ async fn main() {
         .and(warp::path::param::<String>())
         .and(warp::path::end())
         .and(service_info_domain.clone())
-        .and_then(crate::routes::routes::get_info_by_id);
+        .and_then(crate::routes::info::get_info_by_id);
 
     let get_info_by_type = warp::get()
         .and(info_prefix.clone().and(warp::path("type")))
         .and(warp::path::param::<String>())
         .and(warp::path::end())
         .and(service_info_domain.clone())
-        .and_then(crate::routes::routes::get_info_by_type);
+        .and_then(crate::routes::info::get_info_by_type);
 
     let update_info_health = warp::post()
         .and(info_prefix.clone().and(warp::path("health")))
         .and(warp::path::end())
         .and(service_info_domain.clone())
-        .and_then(crate::routes::routes::update_info_health);
+        .and_then(crate::routes::info::update_info_health);
 
     let delete_service_info = warp::delete()
         .and(info_prefix.and(warp::path::param::<String>()))
         .and(warp::path::end())
         .and(service_info_domain.clone())
         .and(service_adapter_domain.clone())
-        .and_then(crate::routes::routes::delete_service_info);
+        .and_then(crate::routes::info::delete_service_info);
 
     let create_service_info = warp::post()
         .and(info_prefix.clone())
         .and(warp::path::end())
         .and(service_info_domain.clone())
         .and(warp::body::json())
-        .and_then(crate::routes::routes::create_service_info);
+        .and_then(crate::routes::info::create_service_info);
 
 
   let routes = get_info_by_id.or(get_info_by_type).or(update_info_health).or(delete_service_info);

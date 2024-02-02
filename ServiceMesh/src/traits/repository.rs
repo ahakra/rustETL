@@ -26,6 +26,6 @@ pub trait ServiceInfoRepositoryTrait {
         &self,
         service_type: String,
     ) -> Result<Option<Vec<ServiceInfo>>, sqlx::Error>;
-     async  fn update_service_info_health(&self,) -> Result<(), sqlx::Error>;
+     async  fn update_service_info_health(&self,id:&str) -> Result<(), sqlx::Error>;
      async  fn delete_service_info(&self, id: &str) -> Result<(), sqlx::Error>;
 }

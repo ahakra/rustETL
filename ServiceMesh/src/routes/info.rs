@@ -13,7 +13,9 @@ pub async fn get_info_by_id(
     service :ServiceInfoDomain<ServiceInfoRepository>,
 ) -> Result<impl warp::Reply, warp::Rejection> {
     let result = service.get_service_info_by_id(id).await;
-    Ok(warp::reply::with_status("Question updated", StatusCode::OK))
+    Ok(warp::reply::json(
+        &result.unwrap()
+        ))
 }
 
 pub async fn get_info_by_type(
@@ -21,15 +23,19 @@ pub async fn get_info_by_type(
     service :ServiceInfoDomain<ServiceInfoRepository>,
 ) -> Result<impl warp::Reply, warp::Rejection> {
     let result = service.get_service_info_by_type(service_type).await;
-    Ok(warp::reply::with_status("Question updated", StatusCode::OK))
+    Ok(warp::reply::json(
+        &result.unwrap()
+        ))
 }
 
 pub async fn update_info_health(
+    id:String,
     service :ServiceInfoDomain<ServiceInfoRepository>,
 ) -> Result<impl warp::Reply, warp::Rejection> {
-    let result = service.update_service_info_health().await;
-    Ok(warp::reply::with_status("Question updated", StatusCode::OK))
+    let result = service.update_service_info_health(&id).await;
+    Ok(warp::reply::with_status("Service health updated", StatusCode::OK))
 }
+
 pub async fn delete_service_info(
     id :String,
     service_info :ServiceInfoDomain<ServiceInfoRepository>,
@@ -38,7 +44,7 @@ pub async fn delete_service_info(
    let deletInfoersult =service_info.delete_service_info(&id).await;
     let serviceAdapters = service_adapter.delete_service_adapter_by_service_info_id(&id).await;
 
-    Ok(warp::reply::with_status("Question updated", StatusCode::OK))
+    Ok(warp::reply::with_status("Service and its adapters are deleted", StatusCode::OK))
 }
 
 
@@ -48,7 +54,9 @@ pub async fn create_service_info(
     service :ServiceInfo,
 
 ) -> Result<impl warp::Reply, warp::Rejection> {
-    let create_Service =service_info.create_service_info(&service).await;
+    let create_service =service_info.create_service_info(&service).await;
 
-    Ok(warp::reply::with_status("Question updated", StatusCode::OK))
+    Ok(warp::reply::json(
+        &create_service.unwrap()
+        ))
 }

@@ -65,15 +65,17 @@ impl ServiceInfoRepositoryTrait for ServiceInfoRepository {
         Ok(Some(result))
     }
     
-     async fn update_service_info_health(&self,) -> Result<(), sqlx::Error> {
+     async fn update_service_info_health(&self,id:&str) -> Result<(), sqlx::Error> {
         let current_timestamp: NaiveDateTime = Utc::now().naive_utc();
     
         sqlx::query!(
             r#"
             UPDATE service_info
             SET update_time = $1
+            where id = $2
             "#,
             current_timestamp.timestamp()
+            ,id
         )
         .execute(&self.pool)
         .await?;

@@ -27,8 +27,8 @@ impl <T>ServiceInfoDomainTrait<T> for  ServiceInfoDomain<T> where T :ServiceInfo
         self.repo.get_service_info_by_type(service_type).await
     }
 
-    async  fn update_service_info_health(&self,) -> Result<(), sqlx::Error> {
-        self.repo.update_service_info_health().await
+    async  fn update_service_info_health(&self,id:&str) -> Result<(), sqlx::Error> {
+        self.repo.update_service_info_health(id).await
     }
 
     async  fn delete_service_info(&self, id: &str) -> Result<(), sqlx::Error> {

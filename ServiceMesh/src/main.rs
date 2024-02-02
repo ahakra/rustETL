@@ -57,7 +57,9 @@ async fn main() {
 
     let update_info_health = warp::post()
         .and(info_prefix.clone().and(warp::path("health")))
+        .and(warp::path::param::<String>())
         .and(warp::path::end())
+       
         .and(service_info_domain.clone())
         .and_then(crate::routes::info::update_info_health);
 

@@ -1,0 +1,12 @@
+{
+    "ip": "127.0.0.1",
+    "port": 22,
+    "username": "foo",
+    "password": "pass",
+    "directory": "/sftpFiles",
+    "name_regex": ".*\\.txt",
+    "valid_directory": "/sftpFiles",
+    "invalid_directory": "/sftpFiles/invalid_files",
+    "partially_invalid_directory": "/sftpFiles/partially_invalid_files"
+  }
+  

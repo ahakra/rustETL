@@ -12,6 +12,14 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-
+   
+  sftp:
+    image: atmoz/sftp
+    volumes:
+      - ./sftpFiles:/sftpFiles
+    ports:
+      - "2222:22"
+    environment:
+      SFTP_USERS: "foo:pass:1001"
 volumes:
   postgres_data:

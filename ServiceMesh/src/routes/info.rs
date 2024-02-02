@@ -2,11 +2,14 @@ use serde::forward_to_deserialize_any;
 use warp::http::StatusCode;
 use sharedLib::serviceMeshTypes::serviceAdapters::ServiceAdapters;
 use sharedLib::serviceMeshTypes::serviceInfo::ServiceInfo;
+use warp::reject::Reject;
 use crate::domain::adapter::ServiceAdapterDomain;
 use crate::domain::info::ServiceInfoDomain;
 use crate::repo::adapters::ServiceAdapterRepostiory;
 use crate::repo::info::ServiceInfoRepository;
 use crate::traits::domain::{ServiceAdapterDomainTrait, ServiceInfoDomainTrait};
+
+use  super::super::helpers::errors;
 
 pub async fn get_info_by_id(
     id: String,
@@ -56,7 +59,22 @@ pub async fn create_service_info(
 ) -> Result<impl warp::Reply, warp::Rejection> {
     let create_service =service_info.create_service_info(&service).await;
 
-    Ok(warp::reply::json(
-        &create_service.unwrap()
-        ))
+    match create_service {
+        Ok(result) => Ok(warp::reply::json(&result)),
+        Err(error) => {
+            if let Some(database_error) = error.as_database_error() {
+                let error_code = database_error.code();
+                
+                if let Some(error_code) = error_code {
+                    if error_code == "23505" {
+                        return Err(warp::reject::custom(errors::Error::DuplicateKey));
+                    }
+                }
+            }
+            // If it's not the specific error code, reject with the original error
+            Err(warp::reject::custom(errors::Error::SQLError))
+        }
+    }
+    
+   
 }

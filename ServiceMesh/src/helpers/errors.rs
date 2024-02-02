@@ -7,9 +7,10 @@ use warp::http::StatusCode;
 pub enum Error {
     ParseError(std::num::ParseIntError),
     MissingParameters,
-    QuestionNotFound,
+    DataNotFound,
     DuplicateKey,
     SQLError,
+    EmptyOrZeroResult,
 }
 
 impl std::fmt::Display for Error {
@@ -17,9 +18,10 @@ impl std::fmt::Display for Error {
         match *self {
             Error::ParseError(ref err) => write!(f, "Cannot parse parameter: {}", err),
             Error::MissingParameters => write!(f, "Missing parameter"),
-            Error::QuestionNotFound => write!(f, "Question not found"),
-            Error::DuplicateKey => write!(f, "Question not found"),
-            Error::SQLError => write!(f, "Question not found"),
+            Error::DataNotFound => write!(f, "Data not found"),
+            Error::DuplicateKey => write!(f, "Duplicate Sql key"),
+            Error::SQLError => write!(f, "SQL error"),
+            Error::EmptyOrZeroResult => write!(f, "No data found"),
         }
     }
 }
@@ -32,8 +34,11 @@ pub async fn return_error(r: Rejection) -> Result<impl Reply, Rejection> {
             Error::DuplicateKey => {
                 Ok(warp::reply::with_status("Duplicate parameter", StatusCode::BAD_REQUEST))
             }
-            Error::QuestionNotFound => {
-                Ok(warp::reply::with_status("Question not found", StatusCode::NOT_FOUND))
+            Error::DataNotFound => {
+                Ok(warp::reply::with_status("Data not found", StatusCode::NOT_FOUND))
+            }
+            Error::EmptyOrZeroResult => {
+                Ok(warp::reply::with_status("Data not found", StatusCode::NOT_FOUND))
             }
             _ => {
                 // Handle other errors if needed

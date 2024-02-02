@@ -10,7 +10,7 @@ use sqlx::postgres::PgConnectOptions;
 use warp::http::Method;
 
 
-use crate::{domain::info::ServiceInfoDomain, helpers::errors, traits:: {
+use crate::{domain::info::ServiceInfoDomain, helpers::errors::{self, return_error}, traits:: {
                        repository::ServiceAdapterRepositoryTrait,
                        domain::ServiceInfoDomainTrait,
                        repository::ServiceInfoRepositoryTrait}
@@ -56,7 +56,7 @@ async fn main() {
         .and(warp::path::param::<String>())
         .and(warp::path::end())
         .and(service_info_domain.clone())
-        .and_then(crate::routes::info::get_info_by_id);//.recover(errors::return_error);
+        .and_then(crate::routes::info::get_info_by_id);
 
     let get_info_by_type = warp::get()
         .and(info_prefix.clone().and(warp::path("type")))
@@ -71,21 +71,21 @@ async fn main() {
         .and(warp::path::end())
        
         .and(service_info_domain.clone())
-        .and_then(crate::routes::info::update_info_health);//.recover(errors::return_error);
+        .and_then(crate::routes::info::update_info_health);
 
     let delete_service_info = warp::delete()
         .and(info_prefix.and(warp::path::param::<String>()))
         .and(warp::path::end())
         .and(service_info_domain.clone())
         .and(service_adapter_domain.clone())
-        .and_then(crate::routes::info::delete_service_info);//.recover(errors::return_error);
+        .and_then(crate::routes::info::delete_service_info);
 
     let create_service_info = warp::post()
         .and(info_prefix.clone())
         .and(warp::path::end())
         .and(service_info_domain.clone())
         .and(warp::body::json())
-        .and_then(crate::routes::info::create_service_info).recover(errors::return_error);
+        .and_then(crate::routes::info::create_service_info);
     
    
 
@@ -102,20 +102,20 @@ async fn main() {
     .and(warp::path::end())
     .and(service_adapter_domain.clone())
     .and(warp::body::json())
-    .and_then(crate::routes::adapters::create_service_adapter);//.recover(errors::return_error);
+    .and_then(crate::routes::adapters::create_service_adapter);
 
     let get_adapter_by_id = warp::get()
     .and(adapter_prefix.clone().and(warp::path("id")))
     .and(warp::path::param::<String>())
     .and(warp::path::end())
     .and(service_adapter_domain.clone())
-    .and_then(crate::routes::adapters::get_adapter_by_id);//.recover(errors::return_error);
+    .and_then(crate::routes::adapters::get_adapter_by_id);
 
     let delete_service_adapter = warp::delete()
     .and(adapter_prefix.and(warp::path::param::<String>()))
     .and(warp::path::end())
     .and(service_adapter_domain.clone())
-    .and_then(crate::routes::adapters::delete_service_adapter).recover(errors::return_error);
+    .and_then(crate::routes::adapters::delete_service_adapter);
 
     
     let delete_service_adapter_by_service_info = warp::delete()
@@ -123,7 +123,7 @@ async fn main() {
     .and(warp::path::param::<String>())
     .and(warp::path::end())
     .and(service_adapter_domain.clone())
-    .and_then(crate::routes::adapters::delete_service_adapter_by_info_id);//.recover(errors::return_error);
+    .and_then(crate::routes::adapters::delete_service_adapter_by_info_id);
 
       
     let get_service_adapter_by_service_info = warp::get()
@@ -140,7 +140,7 @@ async fn main() {
                         .or(delete_service_adapter_by_service_info)
                         .or(get_service_adapter_by_service_info);
 
-  let routes = info_routes.or(adapter_routes).with(cors);
+  let routes = info_routes.or(adapter_routes).with(cors).recover(return_error);
 
     warp::serve(routes)
         .run(([127, 0, 0, 1], 3030))

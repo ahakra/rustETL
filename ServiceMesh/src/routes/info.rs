@@ -16,9 +16,15 @@ pub async fn get_info_by_id(
     service :ServiceInfoDomain<ServiceInfoRepository>,
 ) -> Result<impl warp::Reply, warp::Rejection> {
     let result = service.get_service_info_by_id(id).await;
-    Ok(warp::reply::json(
-        &result.unwrap()
-        ))
+    match result {
+        Ok(data) => {
+            Ok(warp::reply::json(&data))
+        }
+        Err(_) => {
+            // Handle the error case
+            Err(warp::reject::custom(errors::Error::SQLError))
+        }
+    }
 }
 
 pub async fn get_info_by_type(
@@ -26,9 +32,16 @@ pub async fn get_info_by_type(
     service :ServiceInfoDomain<ServiceInfoRepository>,
 ) -> Result<impl warp::Reply, warp::Rejection> {
     let result = service.get_service_info_by_type(service_type).await;
-    Ok(warp::reply::json(
-        &result.unwrap()
-        ))
+    match result {
+        Ok(data) => {
+            Ok(warp::reply::json(&data))
+        }
+        Err(_) => {
+            // Handle the error case
+            Err(warp::reject::custom(errors::Error::SQLError))
+        }
+    }
+   
 }
 
 pub async fn update_info_health(
@@ -36,7 +49,16 @@ pub async fn update_info_health(
     service :ServiceInfoDomain<ServiceInfoRepository>,
 ) -> Result<impl warp::Reply, warp::Rejection> {
     let result = service.update_service_info_health(&id).await;
-    Ok(warp::reply::with_status("Service health updated", StatusCode::OK))
+    
+    match result {
+        Ok(data) => {
+            Ok(warp::reply::with_status("health updated", StatusCode::OK))
+        }
+        Err(_) => {
+            // Handle the error case
+            Err(warp::reject::custom(errors::Error::SQLError))
+        }
+    }
 }
 
 pub async fn delete_service_info(
@@ -47,7 +69,15 @@ pub async fn delete_service_info(
    let deletInfoersult =service_info.delete_service_info(&id).await;
     let serviceAdapters = service_adapter.delete_service_adapter_by_service_info_id(&id).await;
 
-    Ok(warp::reply::with_status("Service and its adapters are deleted", StatusCode::OK))
+    match deletInfoersult {
+        Ok(data) => {
+            Ok(warp::reply::with_status("service deleted", StatusCode::OK))
+        }
+        Err(_) => {
+            // Handle the error case
+            Err(warp::reject::custom(errors::Error::SQLError))
+        }
+    }
 }
 
 

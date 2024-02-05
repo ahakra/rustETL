@@ -3,7 +3,7 @@ pub mod types;
 pub mod helpers;
 pub mod events;
 
-use commands::{on_directory_list_command::OnDirectoryListCommand, on_file_read_command};
+use commands::{on_directory_list_command::OnDirectoryListCommand, on_file_read_command::OnFileReadCommand, on_records_map_command::OnRecordMapCommand};
 
 
 
@@ -37,11 +37,21 @@ fn main() {
     //looping through files to get its content
     for path in &files_present {
       
-        let file_read_command = on_file_read_command::OnFileReadCommand{file_name:path.to_string()};
+        let file_read_command = OnFileReadCommand{file_name:path.to_string()};
        
         let file_read_event = file_read_command.apply(&sftp_config).map(|event| {
-            println!("{:?}",event.file_name);
-            println!("{:?}", String::from_utf8_lossy(&event.file_content));
+            // println!("{:?}",event.file_name);
+            // println!("{:?}", String::from_utf8_lossy(&event.file_content));
+
+            let mut record_map_command = OnRecordMapCommand{file_name : event.file_name, file_content: event.file_content};
+
+            let record_mapped_event = record_map_command.apply() .map(|event| {
+                 println!("{:?}",event.file_name);
+                 println!("{:?}", event.fields);
+            }).unwrap_or_else(|err| {
+                eprintln!("Error parsing file content: {}", err);
+            });
+
         }) .unwrap_or_else(|err| {
             eprintln!("Error reading file content: {}", err);
            

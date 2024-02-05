@@ -1,38 +1,56 @@
 use std::collections::HashMap;
+use std::io;
 use sharedLib::record_mapping_types::field_values::FieldValue;
-
-use crate::events::records_mapped_event;
+use io::Error;
+use crate::events::records_mapped_event::RecordsMappedEvent;
 
 #[derive(Debug)]
 pub struct OnRecordMapCommand {
-    pub file_name:String,
-    
-    pub file_content :Vec<u8>,
-
-
+    pub file_name: String,
+    pub file_content: Vec<u8>,
 }
-
 
 impl OnRecordMapCommand {
-   pub fn apply(file_name:String,file_content:Vec<u8>) {
-    let mut event = records_mapped_event::RecordsMappedEvent{file_name:file_name,fields:HashMap::new()};
+    pub fn apply(&mut self) -> Result<RecordsMappedEvent, io::Error> {
+        let mut event = RecordsMappedEvent {
+            file_name: self.file_name.clone(),
+            fields: Vec::new(),
+        };
 
-    let content_string = String::from_utf8_lossy(&file_content);
-    // Loop through content_string line by line
-    for (_line_number, line) in content_string.lines().enumerate() {
-        // Split each line by commas
-        let parts: Vec<&str> = line.split(',').collect();
+        let content_string = String::from_utf8_lossy(&self.file_content);
+        let mut lines = content_string.lines();
 
-       
-          
-            let first_name = parts[1].trim();
-            event.fields.insert("first_name".to_string(), FieldValue::Text(first_name.to_string()));
+        // Skip the first line (header)
+        lines.next();
 
-            let last_name = parts[2].trim();
-            event.fields.insert("last_name".to_string(), FieldValue::Text(last_name.to_string()));
-                
-            
-    
-   }
-}
+        // Loop through content_string line by line
+        for (line_number, line) in lines.enumerate() {
+            // Split each line by commas
+            let mut hash_map = HashMap::new();
+            let parts: Vec<&str> = line.split(',').collect();
+
+            if parts.len() >= 4 {
+                let id = parts[0].trim();
+                if let Ok(integer_value) = id.parse::<i32>() {
+                    hash_map.insert("id".to_string(), FieldValue::Integer(integer_value));
+                }
+
+                let first_name = parts[1].trim();
+                hash_map.insert("first_name".to_string(), FieldValue::Text(first_name.to_string()));
+
+                let last_name = parts[2].trim();
+                hash_map.insert("last_name".to_string(), FieldValue::Text(last_name.to_string()));
+
+                let msisdn = parts[3].trim();
+                hash_map.insert("msisdn".to_string(), FieldValue::Text(msisdn.to_string()));
+
+                event.fields.push(hash_map);
+            } else {
+                // Handle the case where the line doesn't have enough fields
+                return Err(io::Error::new(io::ErrorKind::InvalidData, format!("Invalid line format at line {}", line_number + 2)));
+            }
+        }
+
+        Ok(event)
+    }
 }

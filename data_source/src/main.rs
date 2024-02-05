@@ -80,7 +80,7 @@ fn main() {
                 eprintln!("Error storing event: {}", err);
             }
             record_mapped_event.map(|event| {
-
+                 // helpers::move_file::moveFile(&sftp_config,event.file_name);
             }).unwrap_or_else(|err| {
                 eprintln!("Error parsing file content: {}", err);
             });

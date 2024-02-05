@@ -1,4 +1,6 @@
-#[derive(Debug)]
+use serde_derive::{Deserialize, Serialize};
+
+#[derive(Serialize,Clone,Deserialize)]
 pub enum FieldValue {
     Integer(i32),
     Float(f64),

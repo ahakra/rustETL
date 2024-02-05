@@ -1,7 +1,7 @@
 pub mod enums;
 pub mod on_directory_list_command;
 pub mod on_file_read_command;
-pub mod on_record_map_command;
+pub mod on_records_map_command;
 // use enums::Commands;
 // use structs::on_file_read_command::OnFileReadCommand;
 // use structs::on_directory_list_command::OnDirectoryListCommand;

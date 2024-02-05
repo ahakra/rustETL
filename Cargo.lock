@@ -302,6 +302,7 @@ dependencies = [
  "bson",
  "serde",
  "serde_json",
+ "sharedLib",
  "ssh2",
 ]
 

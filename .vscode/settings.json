@@ -1,6 +1,10 @@
 {
     "rust-analyzer.linkedProjects": [
         "./ServiceMesh/Cargo.toml",
-        ".\\data_source\\Cargo.toml"
+        ".\\data_source\\Cargo.toml",
+        "./data_source/Cargo.toml",
+        "./data_source/Cargo.toml",
+        "./data_source/Cargo.toml",
+        "./data_source/Cargo.toml"
     ]
 }

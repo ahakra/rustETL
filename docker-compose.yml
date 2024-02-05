@@ -16,7 +16,7 @@ services:
   sftp:
     image: atmoz/sftp
     volumes:
-      - ./sftpFiles:/sftpFiles
+      - ./sftpFiles:/home/foo/sftpFiles
     ports:
       - "2222:22"
     environment:

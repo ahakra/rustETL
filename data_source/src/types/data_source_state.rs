@@ -7,5 +7,5 @@ pub struct DataSourceState {
     id: ObjectId,
     datasource_id: String, 
     last_imported_file: Option<String>, 
-    last_imported_date: Option<DateTime<Utc>>, 
+    last_imported_date:i64, 
 }

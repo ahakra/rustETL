@@ -1,55 +1,53 @@
-mod commands;
+pub mod commands;
+pub mod types;
+pub mod helpers;
+pub mod events;
 
-use std::net::TcpStream;
-use std::io::prelude::*;
-use ssh2::Session;
-use std::path::PathBuf;
+use commands::{on_directory_list_command::OnDirectoryListCommand, on_file_read_command};
 
-use crate::commands::enums::Commands;
+
 
 fn main() {
-    // let tcp = TcpStream::connect("0.0.0.0:2222").unwrap();
-    // let mut sess = Session::new().unwrap();
-    //
-    // sess.set_tcp_stream(tcp);
-    // sess.handshake().unwrap();
-    //
-    // sess.userauth_password("foo", "pass").unwrap();
-    //
-    //
-    // let mut path = PathBuf::new();
-    // path.push( "/home");
-    // path.push( "foo/");
-    // println!("{:?}",&path);
-    // let mut sftp = sess.sftp().unwrap();
-    //
-    //
-    //
-    // match sftp.readdir(&path) {
-    //
-    //     Ok(dir_entries) => {
-    //         for entry in dir_entries {
-    //            println!("{:?}",entry);
-    //          //  println!("{:?}",entry.1.size);
-    //         }
-    //     }
-    //     Err(err) => {
-    //         eprintln!("Failed to list directory: {:?}", err);
-    //         return;
-    //     }
-    // }
+
+    let sftp_config_result = helpers::read_sftp_config::read("sftp_config.json".to_owned());
+
+    let sftp_config = sftp_config_result.unwrap_or_else(|err| {
+        eprintln!("Error reading SFTP config: {}", err);
+        std::process::exit(1);
+    });
+
+   //initialize list directory command
+    let directory_list_command = OnDirectoryListCommand {
+        directory_path: sftp_config.directory.clone(),
+    };
+      
+    // Apply the command to collect event which is list of files
+    let files_present: Vec<String> = directory_list_command.apply(&sftp_config)
+      .map(|event| {
+          event.files.iter()
+              .map(|entry| format!("{}/{}", &sftp_config.directory, entry))
+              .collect()
+      })
+      .unwrap_or_else(|err| {
+          eprintln!("Error handling DirectoryListedEvent: {}", err);
+          Vec::new() 
+      });
+    
+
+    //looping through files to get its content
+    for path in &files_present {
+      
+        let file_read_command = on_file_read_command::OnFileReadCommand{file_name:path.to_string()};
+       
+        let file_read_event = file_read_command.apply(&sftp_config).map(|event| {
+            println!("{:?}",event.file_name);
+            println!("{:?}", String::from_utf8_lossy(&event.file_content));
+        }) .unwrap_or_else(|err| {
+            eprintln!("Error reading file content: {}", err);
+           
+        });
+    }
+        
 
 
-    // let commands = commands_factory("/dire",Commands::ONDIRECTORYLISTCOMMAND);
-    // println!("{:?}",commands);
-    // match  commands {
-    //     CommandTypes::OnDirectoryListCommand(item) =>{
-    //         println!("{}",item.super_struct.command);
-    //         println!("{}",item.super_struct.dir_or_file);
-    //     }
-    //     CommandTypes::OnFileReadCommand(item) => {
-    //         println!("{}",item.super_struct.command);
-    //         println!("{}",item.super_struct.dir_or_file);
-    //     }
-    // }
 }

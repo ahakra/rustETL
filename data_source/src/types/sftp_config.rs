@@ -4,13 +4,13 @@ use serde::{Serialize, Deserialize};
 #[derive(Debug, Serialize, Deserialize)]
 
 pub struct SftpConfig {
-    ip: String,
-    port: u16,
-    username: String,
-    password: String,
-    directory: String,
-    name_regex: String,
-    processed_directory:String,
-    invalid_directory: String,
-    partially_invalid_directory: String,
+    pub ip: String,
+    pub port: u16,
+    pub username: String,
+    pub password: String,
+    pub directory: String,
+    pub name_regex: String,
+    pub processed_directory:String,
+    pub invalid_directory: String,
+    pub partially_invalid_directory: String,
 }

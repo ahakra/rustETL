@@ -1,6 +1,6 @@
-use sharedLib::serviceMeshTypes::serviceInfo::ServiceInfo;
-use sharedLib::serviceMeshTypes::serviceAdapters::ServiceAdapters;
-use sharedLib::serviceMeshTypes::protocolUsed::ProtocolUsed;
+use sharedLib::service_mesh_types::serviceInfo::ServiceInfo;
+use sharedLib::service_mesh_types::serviceAdapters::ServiceAdapters;
+use sharedLib::service_mesh_types::protocolUsed::ProtocolUsed;
 use sqlx::postgres::PgPool;
 use chrono::{Utc, NaiveDateTime};
 use crate::traits::repository::ServiceAdapterRepositoryTrait;

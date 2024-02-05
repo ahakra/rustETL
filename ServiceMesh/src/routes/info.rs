@@ -1,7 +1,7 @@
 use serde::forward_to_deserialize_any;
 use warp::http::StatusCode;
-use sharedLib::serviceMeshTypes::serviceAdapters::ServiceAdapters;
-use sharedLib::serviceMeshTypes::serviceInfo::ServiceInfo;
+use sharedLib::service_mesh_types::serviceAdapters::ServiceAdapters;
+use sharedLib::service_mesh_types::serviceInfo::ServiceInfo;
 use warp::reject::Reject;
 use crate::domain::adapter::ServiceAdapterDomain;
 use crate::domain::info::ServiceInfoDomain;

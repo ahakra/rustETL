@@ -4,7 +4,7 @@ use std::net::TcpStream;
 use std::io::prelude::*;
 use ssh2::Session;
 use std::path::PathBuf;
-use crate::commands::{commands_factory, CommandTypes};
+
 use crate::commands::enums::Commands;
 
 fn main() {
@@ -40,16 +40,16 @@ fn main() {
     // }
 
 
-    let commands = commands_factory("/dire",Commands::ONDIRECTORYLISTCOMMAND);
-    println!("{:?}",commands);
-    match  commands {
-        CommandTypes::OnDirectoryListCommand(item) =>{
-            println!("{}",item.super_struct.command);
-            println!("{}",item.super_struct.dir_or_file);
-        }
-        CommandTypes::OnFileReadCommand(item) => {
-            println!("{}",item.super_struct.command);
-            println!("{}",item.super_struct.dir_or_file);
-        }
-    }
+    // let commands = commands_factory("/dire",Commands::ONDIRECTORYLISTCOMMAND);
+    // println!("{:?}",commands);
+    // match  commands {
+    //     CommandTypes::OnDirectoryListCommand(item) =>{
+    //         println!("{}",item.super_struct.command);
+    //         println!("{}",item.super_struct.dir_or_file);
+    //     }
+    //     CommandTypes::OnFileReadCommand(item) => {
+    //         println!("{}",item.super_struct.command);
+    //         println!("{}",item.super_struct.dir_or_file);
+    //     }
+    // }
 }

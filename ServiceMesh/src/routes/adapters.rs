@@ -10,7 +10,7 @@ use  super::super::helpers::errors;
 
 pub async fn create_service_adapter(
     service_adapter :ServiceAdapterDomain<ServiceAdapterRepostiory>,
-    service :sharedLib::serviceMeshTypes::serviceAdapters::ServiceAdapters,
+    service :sharedLib::service_mesh_types::serviceAdapters::ServiceAdapters,
 
 ) -> Result<impl warp::Reply, warp::Rejection> {
     let create_service =service_adapter.create_service_adapter(&service).await;

@@ -1,1 +1,2 @@
-pub mod serviceMeshTypes;
+pub mod service_mesh_types;
+pub mod record_mapping_types;

@@ -1,4 +1,4 @@
-use sharedLib::serviceMeshTypes::serviceInfo::ServiceInfo;
+use sharedLib::service_mesh_types::serviceInfo::ServiceInfo;
 use sqlx::postgres::PgPool;
 use chrono::{Utc, NaiveDateTime};
 

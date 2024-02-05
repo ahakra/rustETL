@@ -1,14 +1,12 @@
-
-
 #[derive(Debug)]
-pub struct OnDirectoryListCommand {
-    pub directory_path:String,
+pub struct OnRecordMapCommand {
+    pub file_path:String,
 
 
 }
 
 
-impl OnDirectoryListCommand {
+impl OnRecordMapCommand {
     pub fn new(directory_path: String) -> Self {
      
      return OnDirectoryListCommand{ directory_path}

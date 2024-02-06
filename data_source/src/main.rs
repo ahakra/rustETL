@@ -26,14 +26,14 @@ fn append_to_event_store(event: impl StorableEvent) -> Result<(), io::Error> {
 }
 #[tokio::main]
 async  fn main() {
-    let _ = helpers::register_update::delete().await;
-    let _ = helpers::register_update::register().await;
+    let _ = helpers::crud_service::delete().await;
+    let _ = helpers::crud_service::register().await;
 
       
     // Spawn a new Tokio task for updating health periodically
     let _handle = tokio::spawn(async {
         loop {
-            match helpers::register_update::update_health().await {
+            match helpers::crud_service::update_health().await {
                 Ok(response) => {
                     println!("Update health Response: {:?}", response.status());
                 }

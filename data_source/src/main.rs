@@ -116,7 +116,7 @@ async  fn main() {
             } else{
                 println!("No files in directory");
             }
-            tokio::time::sleep(tokio::time::Duration::from_secs(10)).await;
+            tokio::time::sleep(tokio::time::Duration::from_secs(30)).await;
 
     }
 

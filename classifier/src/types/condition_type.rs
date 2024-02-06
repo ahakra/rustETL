@@ -4,4 +4,5 @@ use serde_derive::{Deserialize, Serialize};
 pub enum ConditionType {
     AND,
     OR,
+    None,
 }

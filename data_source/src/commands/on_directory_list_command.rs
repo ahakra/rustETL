@@ -47,7 +47,10 @@ impl OnDirectoryListCommand {
                     .file_name()
                     .and_then(|s| s.to_str())
                     .map(|s| s.to_owned()).unwrap_or_default();
-                 directory_listed_event.files.push(file_name);
+                let is_directory = entry.1.is_dir();
+                if !is_directory {
+                     directory_listed_event.files.push(file_name);
+                }
                 }
             }
             Err(err) => {

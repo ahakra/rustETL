@@ -11,3 +11,5 @@ serde = {  version  = "1.0.195" }
 serde_json = "1.0.113"
 bson = "2.9"
 sharedLib = { path = "../sharedLib" }
+reqwest = { version = "0.11", features = ["json"] }
+tokio = { version = "1.35", features = ["full"] }

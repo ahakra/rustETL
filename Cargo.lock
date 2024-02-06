@@ -3,21 +3,6 @@
 version = 3
 
 [[package]]
-name = "ServiceMesh"
-version = "0.1.0"
-dependencies = [
- "chrono",
- "dotenv",
- "serde",
- "serde_derive",
- "serde_json",
- "shared_lib",
- "sqlx",
- "tokio",
- "warp",
-]
-
-[[package]]
 name = "addr2line"
 version = "0.21.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1598,6 +1583,21 @@ dependencies = [
  "itoa",
  "ryu",
  "serde",
+]
+
+[[package]]
+name = "service_mesh"
+version = "0.1.0"
+dependencies = [
+ "chrono",
+ "dotenv",
+ "serde",
+ "serde_derive",
+ "serde_json",
+ "shared_lib",
+ "sqlx",
+ "tokio",
+ "warp",
 ]
 
 [[package]]

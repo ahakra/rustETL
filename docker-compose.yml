@@ -5,7 +5,7 @@ services:
     image: postgres:14.0
     container_name: my_postgres_container
     environment:
-      POSTGRES_DB: serviceMesh
+      POSTGRES_DB: service_mesh
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: ak
     ports:

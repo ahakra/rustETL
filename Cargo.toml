@@ -1,5 +1,5 @@
 [workspace]
 members = [
-   "ServiceMesh"
+   "service_mesh"
    
 , "data_source", "shared_lib"]

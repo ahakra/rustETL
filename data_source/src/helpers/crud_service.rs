@@ -1,5 +1,3 @@
-use std::collections::HashMap;
-
 use reqwest::{self, Error, Response};
 
 use sharedLib::service_mesh_types::serviceInfo::ServiceInfo;

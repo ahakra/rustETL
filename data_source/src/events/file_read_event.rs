@@ -1,5 +1,4 @@
 use serde::{Deserialize, Serialize};
-use crate::events::directory_listed_event::DirectoryListedEvent;
 use crate::traits::event_trait::StorableEvent;
 
 #[derive(Serialize,Clone,Deserialize)]

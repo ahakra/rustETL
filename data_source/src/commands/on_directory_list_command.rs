@@ -1,10 +1,10 @@
 
-use crate::events::directory_listed_event::{self, DirectoryListedEvent};
+use crate::events::directory_listed_event::DirectoryListedEvent;
 use crate::types::sftp_config::SftpConfig;
 
 
 use std::net::TcpStream;
-use std::io::{self, prelude::*};
+
 use ssh2::Session;
 use std::path::PathBuf;
 
@@ -35,7 +35,7 @@ impl OnDirectoryListCommand {
         path.push( &sftp_config.directory);
         
    
-        let mut sftp = sess.sftp().unwrap();
+        let  sftp = sess.sftp().unwrap();
         
         let mut directory_listed_event = DirectoryListedEvent{directory :sftp_config.directory.clone(),files: Vec::new(),};
         

@@ -1,6 +1,5 @@
 use std::io;
 use std::{fs::File, io::Read};
-use crate::types::errors::JSONError;
 use crate::types::sftp_config::SftpConfig;
 
 

@@ -1,7 +1,6 @@
 use std::collections::HashMap;
 use std::io;
 use sharedLib::record_mapping_types::field_values::FieldValue;
-use io::Error;
 use crate::events::records_mapped_event::RecordsMappedEvent;
 
 #[derive(Debug)]
@@ -30,7 +29,11 @@ impl OnRecordMapCommand {
             let parts: Vec<&str> = line.split(',').collect();
 
             if parts.len() >= 4 {
+                hash_map.insert("type".to_string(), FieldValue::Text("cdr".to_string()));
+                hash_map.insert("file_name".to_string(), FieldValue::Text(self.file_name.to_string()));
+                hash_map.insert("data_source_id".to_string(), FieldValue::Text("13336663313".to_string()));
                 let id = parts[0].trim();
+               
                 if let Ok(integer_value) = id.parse::<i32>() {
                     hash_map.insert("id".to_string(), FieldValue::Integer(integer_value));
                 }

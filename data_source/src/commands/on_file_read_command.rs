@@ -1,6 +1,6 @@
 use crate::{events::file_read_event::FilesReadEvent, types::sftp_config::SftpConfig};
 use std::net::TcpStream;
-use std::io::{self, prelude::*};
+use std::io::prelude::*;
 use ssh2::Session;
 use std::path::PathBuf;
 
@@ -25,7 +25,7 @@ impl OnFileReadCommand {
         let mut path = PathBuf::new();
         path.push(&self.file_name);
     
-        let mut sftp = sess.sftp()?;
+        let  sftp = sess.sftp()?;
         
         // Open the file
         let mut file = match sftp.open(&path) {

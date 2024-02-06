@@ -5,12 +5,11 @@ pub mod events;
 pub mod traits;
 use std::thread::sleep;
 use std::time::Duration;
-use std::{io::Write, thread};
+use std::io::Write ;
 use std::sync::Arc;
 use std::fs::OpenOptions;
 use std::io;
 use tokio;
-use reqwest::Response;
 use commands::{on_directory_list_command::OnDirectoryListCommand, on_file_read_command::OnFileReadCommand, on_records_map_command::OnRecordMapCommand};
 use crate::traits::event_trait::StorableEvent;
 

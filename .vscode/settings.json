@@ -5,6 +5,8 @@
         "./data_source/Cargo.toml",
         "./data_source/Cargo.toml",
         "./data_source/Cargo.toml",
-        "./data_source/Cargo.toml"
+        "./data_source/Cargo.toml",
+        "./classifier/Cargo.toml",
+        "./classifier/Cargo.toml"
     ]
 }

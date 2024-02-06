@@ -2,4 +2,4 @@
 members = [
    "service_mesh"
    
-, "data_source", "shared_lib"]
+, "data_source", "shared_lib", "classifier"]

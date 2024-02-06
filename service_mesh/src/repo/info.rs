@@ -18,10 +18,11 @@ impl ServiceInfoRepositoryTrait for ServiceInfoRepository {
       
         sqlx::query!(
             r#"
-            INSERT INTO service_info (id, service_type, update_time)
-            VALUES ($1, $2, $3)
+            INSERT INTO service_info (id,service_name, service_type, update_time)
+            VALUES ($1, $2, $3,$4)
             "#,
             service.id,
+            service.service_name,
             service.service_type,
             service.update_time
            
@@ -35,7 +36,7 @@ impl ServiceInfoRepositoryTrait for ServiceInfoRepository {
         let result = sqlx::query_as!(
             ServiceInfo,
             r#"
-            SELECT id, service_type, update_time
+            SELECT id,service_name, service_type, update_time
             FROM service_info
             WHERE id = $1
             "#,
@@ -53,7 +54,7 @@ impl ServiceInfoRepositoryTrait for ServiceInfoRepository {
         let result: Vec<ServiceInfo> = sqlx::query_as!(
             ServiceInfo,
             r#"
-            SELECT id, service_type, update_time
+            SELECT id,service_name, service_type, update_time
             FROM service_info
             WHERE service_type = $1
             "#,

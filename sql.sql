@@ -1,5 +1,6 @@
 CREATE TABLE service_info (
     id VARCHAR(255) PRIMARY KEY,
+    service_name VARCHAR(255) NOT NULL,
     service_type VARCHAR(255) NOT NULL,
     update_time BIGINT NOT NULL
     -- Uncomment the line below if you want to include Adapters column

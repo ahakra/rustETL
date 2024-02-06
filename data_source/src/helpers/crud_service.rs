@@ -6,6 +6,7 @@ pub async fn register(){
   
     let info = ServiceInfo{
         id: "13336663313".to_string(),
+        service_name:"CDR".to_string(),
         service_type: "DataSource".to_string(),
         update_time:1707202588,
           
@@ -30,6 +31,7 @@ pub async fn register(){
 pub async fn update_health() -> Result<Response,Error>{
     let info = ServiceInfo{
         id: "13336663313".to_string(),
+        service_name:"CDR".to_string(),
         service_type: "DataSource".to_string(),
         update_time:1707202588,
           
@@ -52,6 +54,7 @@ pub async fn update_health() -> Result<Response,Error>{
 pub async fn delete(){
     let info = ServiceInfo{
         id: "13336663313".to_string(),
+        service_name:"CDR".to_string(),
         service_type: "DataSource".to_string(),
         update_time:1707202588,
           

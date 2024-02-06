@@ -1,7 +1,7 @@
 use std::io;
 
 #[derive(Debug)]
-pub enum sftpError {
+pub enum SftpError {
     ConnectionError,
     ListingError,
     FieldMappingError,

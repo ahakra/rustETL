@@ -1,8 +1,8 @@
 #[derive(Debug)]
 pub struct FileInfo {
-    filename: String,
-    size: u64,
-    date: i64,
+    pub filename: String,
+    pub size: u64,
+    pub date: i64,
 }
 
 

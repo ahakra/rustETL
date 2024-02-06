@@ -1,6 +1,5 @@
 use serde_derive::{Deserialize, Serialize};
-use sqlx::{postgres::PgTypeInfo, prelude::Type};
-use sqlx::{Database, TypeInfo};
+
 
 #[derive(Deserialize, Serialize, Debug, Clone)]
 pub  enum ProtocolUsed {

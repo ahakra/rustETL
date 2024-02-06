@@ -1,4 +1,4 @@
-use sharedLib::service_mesh_types::serviceAdapters::ServiceAdapters;
+use shared_lib::service_mesh_types::service_adapters::ServiceAdapters;
 
 use crate:: traits::{domain::ServiceAdapterDomainTrait, repository::ServiceAdapterRepositoryTrait};
 

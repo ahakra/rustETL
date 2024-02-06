@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 use std::io;
-use sharedLib::record_mapping_types::field_values::FieldValue;
+use shared_lib::record_mapping_types::field_values::FieldValue;
 use crate::events::records_mapped_event::RecordsMappedEvent;
 
 #[derive(Debug)]

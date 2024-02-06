@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 use serde::{Deserialize, Serialize};
-use sharedLib::record_mapping_types::field_values::FieldValue;
+use shared_lib::record_mapping_types::field_values::FieldValue;
 use crate::traits::event_trait::StorableEvent;
 
 #[derive(Serialize,Clone,Deserialize)]

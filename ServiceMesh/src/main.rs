@@ -5,12 +5,12 @@ pub mod routes;
 pub mod helpers;
 use std::{env, str::FromStr};
 use tokio;
-use warp::{cors, Filter};
+use warp::Filter;
 use sqlx::postgres::PgConnectOptions;
 use warp::http::Method;
 
 
-use crate::{domain::info::ServiceInfoDomain, helpers::errors::{self, return_error}, traits:: {
+use crate::{domain::info::ServiceInfoDomain, helpers::errors::return_error, traits:: {
                        repository::ServiceAdapterRepositoryTrait,
                        domain::ServiceInfoDomainTrait,
                        repository::ServiceInfoRepositoryTrait}

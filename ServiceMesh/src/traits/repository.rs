@@ -1,5 +1,5 @@
-use sharedLib::service_mesh_types::serviceAdapters::ServiceAdapters;
-use sharedLib::service_mesh_types::serviceInfo::ServiceInfo;
+use shared_lib::service_mesh_types::service_adapters::ServiceAdapters;
+use shared_lib::service_mesh_types::service_info::ServiceInfo;
 use sqlx::postgres::PgPool;
 pub trait ServiceAdapterRepositoryTrait {
      fn new(pool: sqlx::PgPool) -> Self;

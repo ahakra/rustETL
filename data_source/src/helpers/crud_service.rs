@@ -1,6 +1,6 @@
 use reqwest::{self, Error, Response};
 
-use sharedLib::service_mesh_types::serviceInfo::ServiceInfo;
+use shared_lib::service_mesh_types::service_info::ServiceInfo;
 pub async fn register(){
     let client = reqwest::Client::new();
   

@@ -2,4 +2,4 @@
 members = [
    "ServiceMesh"
    
-, "data_source", "sharedLib"]
+, "data_source", "shared_lib"]

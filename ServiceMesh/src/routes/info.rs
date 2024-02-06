@@ -1,8 +1,5 @@
-use serde::forward_to_deserialize_any;
 use warp::http::StatusCode;
-use sharedLib::service_mesh_types::serviceAdapters::ServiceAdapters;
-use sharedLib::service_mesh_types::serviceInfo::ServiceInfo;
-use warp::reject::Reject;
+use shared_lib::service_mesh_types::service_info::ServiceInfo;
 use crate::domain::adapter::ServiceAdapterDomain;
 use crate::domain::info::ServiceInfoDomain;
 use crate::repo::adapters::ServiceAdapterRepostiory;
@@ -51,7 +48,7 @@ pub async fn update_info_health(
     let result = service.update_service_info_health(&id).await;
     
     match result {
-        Ok(data) => {
+        Ok(_data) => {
             Ok(warp::reply::with_status("health updated", StatusCode::OK))
         }
         Err(_) => {
@@ -66,11 +63,11 @@ pub async fn delete_service_info(
     service_info :ServiceInfoDomain<ServiceInfoRepository>,
     service_adapter :ServiceAdapterDomain<ServiceAdapterRepostiory>,
 ) -> Result<impl warp::Reply, warp::Rejection> {
-   let deletInfoersult =service_info.delete_service_info(&id).await;
-    let serviceAdapters = service_adapter.delete_service_adapter_by_service_info_id(&id).await;
+   let delet_infoersult =service_info.delete_service_info(&id).await;
+    let _service_adapters = service_adapter.delete_service_adapter_by_service_info_id(&id).await;
 
-    match deletInfoersult {
-        Ok(data) => {
+    match delet_infoersult {
+        Ok(_data) => {
             Ok(warp::reply::with_status("service deleted", StatusCode::OK))
         }
         Err(_) => {

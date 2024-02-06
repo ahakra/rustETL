@@ -10,7 +10,7 @@ use  super::super::helpers::errors;
 
 pub async fn create_service_adapter(
     service_adapter :ServiceAdapterDomain<ServiceAdapterRepostiory>,
-    service :sharedLib::service_mesh_types::serviceAdapters::ServiceAdapters,
+    service :shared_lib::service_mesh_types::service_adapters::ServiceAdapters,
 
 ) -> Result<impl warp::Reply, warp::Rejection> {
     let create_service =service_adapter.create_service_adapter(&service).await;
@@ -55,7 +55,7 @@ pub async fn delete_service_adapter(
 ) -> Result<impl warp::Reply, warp::Rejection> {
     let result = service.delete_service_adapter(&id).await;
     match result {
-        Ok(data) => {
+        Ok(_data) => {
             Ok(warp::reply::with_status("adapter deleted", StatusCode::OK))
         }
         Err(_) => {
@@ -72,7 +72,7 @@ pub async fn delete_service_adapter_by_info_id(
 ) -> Result<impl warp::Reply, warp::Rejection> {
     let result = service.delete_service_adapter_by_service_info_id(&id).await;
     match result {
-        Ok(data) => {
+        Ok(_data) => {
             Ok(warp::reply::with_status("adapters deleted", StatusCode::OK))
         }
         Err(_) => {

@@ -1,6 +1,6 @@
 
-use sharedLib::service_mesh_types::serviceAdapters::ServiceAdapters;
-use sharedLib::service_mesh_types::serviceInfo::ServiceInfo;
+use shared_lib::service_mesh_types::service_adapters::ServiceAdapters;
+use shared_lib::service_mesh_types::service_info::ServiceInfo;
 
 pub trait ServiceAdapterDomainTrait<T> {
     fn new(repo: T) -> Self ;

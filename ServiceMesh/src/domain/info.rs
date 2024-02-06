@@ -1,5 +1,5 @@
 use crate:: traits::{repository::ServiceInfoRepositoryTrait, domain::ServiceInfoDomainTrait};
-use sharedLib::service_mesh_types::serviceInfo::ServiceInfo;
+use shared_lib::service_mesh_types::service_info::ServiceInfo;
 
 pub struct ServiceInfoDomain<T: ServiceInfoRepositoryTrait> {
     repo: T,
@@ -16,7 +16,7 @@ impl <T>ServiceInfoDomainTrait<T> for  ServiceInfoDomain<T> where T :ServiceInfo
         self.repo.create_service_info(service).await
     }
 
-    async fn get_service_info_by_id(&self, id: String) -> Result<Option<sharedLib::service_mesh_types::serviceInfo::ServiceInfo>, sqlx::Error> {
+    async fn get_service_info_by_id(&self, id: String) -> Result<Option<shared_lib::service_mesh_types::service_info::ServiceInfo>, sqlx::Error> {
        self.repo.get_service_info_by_id(id).await
     }
 

@@ -1,4 +1,4 @@
-use super::protocolUsed:: ProtocolUsed;
+use super::protocol_used:: ProtocolUsed;
 use serde_derive::{Deserialize, Serialize};
 
 

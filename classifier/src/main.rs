@@ -3,7 +3,10 @@ use std::collections::HashMap;
 use shared_lib::record_mapping_types::field_values::FieldValue;
 
 use shared_lib::evaluator::{condition::Condition, condition_type::ConditionType, operator::Operator};
+use crate::types::classification::Classification::UNCLASSIFIED;
+use crate::types::classifier::Classifier;
 
+pub mod types;
 
 fn main() {
      // Create a record with additional fields
@@ -53,7 +56,13 @@ fn main() {
 
      // Serialize condition1 to a JSON-formatted string
     let condition_json = serde_json::to_string_pretty(&condition1).unwrap();
-
-    // Print the serialized value
     println!("Serialized Condition1:\n{}", condition_json);
+    let classifier = Classifier{
+        condition:serde_json::from_str(&condition_json).unwrap(),
+        classification:UNCLASSIFIED,
+    };
+
+    let classifier_json = serde_json::to_string_pretty(&classifier).unwrap();
+   println!("Serialized classifier:\n: {}", classifier_json);
+
 }

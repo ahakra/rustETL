@@ -5,6 +5,7 @@
       <sourceFolder url="file://$MODULE_DIR$/service_mesh/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/shared_lib/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/data_source/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/classifier/src" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
     <orderEntry type="inheritedJdk" />

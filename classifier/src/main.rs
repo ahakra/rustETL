@@ -2,9 +2,9 @@ use std::collections::HashMap;
 
 use shared_lib::record_mapping_types::field_values::FieldValue;
 
-use crate::types::{classifier::Condition, condition_type::ConditionType, operator::Operator};
+use shared_lib::evaluator::{classifier::Condition, condition_type::ConditionType, operator::Operator};
 
-pub mod types;
+
 fn main() {
      // Create some sample data
     let mut records: Vec<HashMap<String, FieldValue>> = Vec::new();

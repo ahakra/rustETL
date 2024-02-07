@@ -5,7 +5,8 @@ use shared_lib::record_mapping_types::field_values::FieldValue;
 use shared_lib::evaluator::{condition::Condition, condition_type::ConditionType, operator::Operator};
 use crate::types::classification::Classification::UNCLASSIFIED;
 use crate::types::classifier::Classifier;
-
+use std::time::Duration;
+use kafka::producer::{Producer, Record, RequiredAcks};
 pub mod types;
 
 fn main() {
@@ -64,5 +65,30 @@ fn main() {
 
     let classifier_json = serde_json::to_string_pretty(&classifier).unwrap();
    println!("Serialized classifier:\n: {}", classifier_json);
+
+    let  buf = serde_json::to_vec(&record).unwrap();
+    let  producer =
+        Producer::from_hosts(vec!("localhost:9092".to_owned()))
+            .with_ack_timeout(Duration::from_secs(1))
+            .with_required_acks(RequiredAcks::One)
+            .create();
+
+    match producer{
+        Ok(mut producer) =>{
+            let result = &producer.send(&Record::from_value("my-topic", buf));
+            match result {
+                Ok(_) => {
+                    println!("OK");
+                }
+                Err(_) => {
+                    println!("Error: ");
+                }
+            }
+        }
+        _ => println!("error")
+    }
+
+
+
 
 }

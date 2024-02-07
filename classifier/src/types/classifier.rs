@@ -39,10 +39,10 @@ impl Condition{
                     for sub_cond in &condition.sub_cond {
 
                         if Self::evaluate_condition(&sub_cond, &record) {
-                                        return false
+                                        return true
                         }               
                 }       
-                return true
+                return false
             },
             _ =>{
                 match condition.operator  {

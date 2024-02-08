@@ -5,7 +5,7 @@ use crate::types::classifier::Classifier;
 //use kafka::producer::{Producer, Record, RequiredAcks};
 pub mod types;
 pub mod repo;
-pub mod conditions;
+pub mod conditions_intiliazser;
 #[tokio::main]
 async fn main() {
      const DATABASE:&str = "Classifier";
@@ -14,15 +14,12 @@ async fn main() {
     
   
 
-    // let classifier = Classifier{
-    //     condition:conditions::condition1.clone(),
-    //     classification:UNCLASSIFIED,
-    //     record_type:"cdr".to_string(),
-    //     order:1,
-    // };
+  
 
-    // let repo = MongoRepo::new("mongodb://amd:ak@localhost:27017".to_string()).await.unwrap();
-    // let _insert = repo.insert_record(DATABASE,COLLECTION,classifier).await.unwrap();
+    let repo = MongoRepo::new("mongodb://amd:ak@localhost:27017".to_string()).await.unwrap();
+    let _insert = repo.insert_record(DATABASE,COLLECTION,conditions_intiliazser::CLASSIFIER_6666.clone()).await.unwrap();
+    let _insert = repo.insert_record(DATABASE,COLLECTION,conditions_intiliazser::CLASSIFIER_6667.clone()).await.unwrap();
+    let _insert = repo.insert_record(DATABASE,COLLECTION,conditions_intiliazser::CLASSIFIER_LEEANNE.clone()).await.unwrap();
 
     // let gettt = repo.get_by_record_type(DATABASE,DATABASE,"cdr").await.unwrap();
     // for i in gettt {
@@ -30,8 +27,7 @@ async fn main() {
     // }
 
 
-//     let classifier_json = serde_json::to_string_pretty(&classifier).unwrap();
-//    println!("Serialized classifier:\n: {}", classifier_json);
+
 
     // let  buf = serde_json::to_vec(&record).unwrap();
     // let  producer =

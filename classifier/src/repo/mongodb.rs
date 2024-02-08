@@ -29,9 +29,7 @@ impl MongoRepo {
     ) -> Result<(), mongodb::error::Error> {
         // Get a handle to a database.
         let alive = &self.client.list_database_names(None, None).await?;
-        for i in alive{
-            println!("{}",i);
-        }
+     
         let db = self.client.database(db_name);
         let collection = db.collection::<Document>(collection_name);
 

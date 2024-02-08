@@ -1,6 +1,6 @@
 use serde_derive::{Deserialize, Serialize};
 
-#[derive(Serialize,Clone,Deserialize,PartialEq,PartialOrd)]
+#[derive(Debug,Serialize,Clone,Deserialize,PartialEq,PartialOrd)]
 pub enum Operator{
     Equal,
     LessThanOrEqual,
@@ -10,4 +10,5 @@ pub enum Operator{
     NotEqual,
     Empty,
     NonEmpty,
+    StartsWith,
 }

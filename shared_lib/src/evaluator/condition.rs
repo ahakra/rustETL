@@ -5,7 +5,7 @@ use super::super::record_mapping_types::field_values::FieldValue;
 use super::{condition_type::ConditionType, operator::Operator};
 use serde_derive::{Deserialize, Serialize};
 
-#[derive(Serialize,Clone,Deserialize,PartialEq,PartialOrd)]
+#[derive(Debug,Serialize,Clone,Deserialize,PartialEq,PartialOrd)]
 pub struct Condition  {
     pub sub_cond:Vec<Condition>,
     pub condition_type:ConditionType,
@@ -26,21 +26,27 @@ impl Condition{
         match self.condition_type {
             ConditionType::AND => {
                 let specified_condition = self.evaluate_operator(record);
+                if self.sub_cond.len()>0 {
                 let sub_conditions = self
                     .sub_cond
                     .iter()
                     .all(|sub_cond| sub_cond.evaluate_condition(record));
 
-                specified_condition && sub_conditions
+               return specified_condition && sub_conditions
+            }        
+            specified_condition
             }
             ConditionType::OR => {
                 let specified_condition = self.evaluate_operator(record);
+                if self.sub_cond.len()>0 {
                 let sub_conditions = self
                     .sub_cond
                     .iter()
                     .any(|sub_cond| sub_cond.evaluate_condition(record));
 
-                specified_condition || sub_conditions
+                    return specified_condition || sub_conditions
+                }
+                specified_condition
             }
             ConditionType::None => true,
         }
@@ -103,7 +109,22 @@ pub fn evaluate_operator(&self,record:&HashMap<String,FieldValue>,)->bool {
             } else{
                 return false
             }
-        },
+        }, Operator::StartsWith => {
+            if let Some(FieldValue::Text(value)) = record.get(&self.field_name){
+                if let FieldValue::Text(inner_text) = &self.field_value {
+                
+                    return value.starts_with(inner_text)
+                   
+            }
+             
+                } else {
+                    // Handle the case where it's not a FieldValue::Text
+                    println!("Not a text variant");
+                }
+                   
+        false
+   }
+        
     
     }
   }   

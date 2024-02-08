@@ -3,13 +3,15 @@ use std::collections::HashMap;
 use shared_lib::record_mapping_types::field_values::FieldValue;
 
 use shared_lib::evaluator::{condition::Condition, condition_type::ConditionType, operator::Operator};
+use crate::repo::mongodb::MongoRepo;
 use crate::types::classification::Classification::UNCLASSIFIED;
 use crate::types::classifier::Classifier;
 use std::time::Duration;
 //use kafka::producer::{Producer, Record, RequiredAcks};
 pub mod types;
-
-fn main() {
+pub mod repo;
+#[tokio::main]
+async fn main() {
      // Create a record with additional fields
      let mut record: HashMap<String, FieldValue> = HashMap::new();
      record.insert("age".to_string(), FieldValue::Integer(35));
@@ -54,14 +56,25 @@ fn main() {
  
      // Print the result
      println!("Condition evaluation result: {}", result);
+     
+  
+    let condition_json = serde_json::to_string_pretty(&condition1).unwrap();
 
-     // Serialize condition1 to a JSON-formatted string
-//     let condition_json = serde_json::to_string_pretty(&condition1).unwrap();
-//     println!("Serialized Condition1:\n{}", condition_json);
-//     let classifier = Classifier{
-//         condition:serde_json::from_str(&condition_json).unwrap(),
-//         classification:UNCLASSIFIED,
-//     };
+    let classifier = Classifier{
+        condition:serde_json::from_str(&condition_json).unwrap(),
+        classification:UNCLASSIFIED,
+        record_type:"cdr".to_string(),
+        order:1,
+    };
+
+    let repo = MongoRepo::new("mongodb://amd:ak@localhost:27017".to_string()).await.unwrap();
+    let _insert = repo.insert_record("edr","cdr",classifier).await.unwrap();
+
+    let gettt = repo.get_by_record_type("edr","cdr","cdr").await.unwrap();
+    for i in gettt {
+        println!("{:?}",i);
+    }
+
 
 //     let classifier_json = serde_json::to_string_pretty(&classifier).unwrap();
 //    println!("Serialized classifier:\n: {}", classifier_json);

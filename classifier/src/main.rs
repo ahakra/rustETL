@@ -6,7 +6,7 @@ use shared_lib::evaluator::{condition::Condition, condition_type::ConditionType,
 use crate::types::classification::Classification::UNCLASSIFIED;
 use crate::types::classifier::Classifier;
 use std::time::Duration;
-use kafka::producer::{Producer, Record, RequiredAcks};
+//use kafka::producer::{Producer, Record, RequiredAcks};
 pub mod types;
 
 fn main() {
@@ -19,10 +19,10 @@ fn main() {
      // Create a complex condition
      let condition4 = Condition {
          sub_cond: Vec::new(),
-         condition_type: ConditionType::None,
-         operator: Operator::Equal,
+         condition_type: ConditionType::AND,
+         operator: Operator::StartsWtih,
          field_name: "name".to_string(),
-         field_value: FieldValue::Text("John".to_string()),
+         field_value: FieldValue::Text("J".to_string()),
      };
  
      let condition3 = Condition {
@@ -35,7 +35,7 @@ fn main() {
  
      let condition2 = Condition {
          sub_cond: Vec::new(),
-         condition_type: ConditionType::None,
+         condition_type: ConditionType::AND,
          operator: Operator::GreaterThanOrEqual,
          field_name: "salary".to_string(),
          field_value: FieldValue::Float(45000.0),
@@ -46,7 +46,7 @@ fn main() {
          condition_type: ConditionType::OR,
          operator: Operator::GreaterThan,
          field_name: "age".to_string(),
-         field_value: FieldValue::Integer(30),
+         field_value: FieldValue::Integer(40),
      };
  
      // Evaluate the condition
@@ -56,37 +56,37 @@ fn main() {
      println!("Condition evaluation result: {}", result);
 
      // Serialize condition1 to a JSON-formatted string
-    let condition_json = serde_json::to_string_pretty(&condition1).unwrap();
-    println!("Serialized Condition1:\n{}", condition_json);
-    let classifier = Classifier{
-        condition:serde_json::from_str(&condition_json).unwrap(),
-        classification:UNCLASSIFIED,
-    };
+//     let condition_json = serde_json::to_string_pretty(&condition1).unwrap();
+//     println!("Serialized Condition1:\n{}", condition_json);
+//     let classifier = Classifier{
+//         condition:serde_json::from_str(&condition_json).unwrap(),
+//         classification:UNCLASSIFIED,
+//     };
 
-    let classifier_json = serde_json::to_string_pretty(&classifier).unwrap();
-   println!("Serialized classifier:\n: {}", classifier_json);
+//     let classifier_json = serde_json::to_string_pretty(&classifier).unwrap();
+//    println!("Serialized classifier:\n: {}", classifier_json);
 
-    let  buf = serde_json::to_vec(&record).unwrap();
-    let  producer =
-        Producer::from_hosts(vec!("localhost:9092".to_owned()))
-            .with_ack_timeout(Duration::from_secs(1))
-            .with_required_acks(RequiredAcks::One)
-            .create();
+    // let  buf = serde_json::to_vec(&record).unwrap();
+    // let  producer =
+    //     Producer::from_hosts(vec!("localhost:9092".to_owned()))
+    //         .with_ack_timeout(Duration::from_secs(1))
+    //         .with_required_acks(RequiredAcks::One)
+    //         .create();
 
-    match producer{
-        Ok(mut producer) =>{
-            let result = &producer.send(&Record::from_value("my-topic", buf));
-            match result {
-                Ok(_) => {
-                    println!("OK");
-                }
-                Err(_) => {
-                    println!("Error: ");
-                }
-            }
-        }
-        _ => println!("error")
-    }
+    // match producer{
+    //     Ok(mut producer) =>{
+    //         let result = &producer.send(&Record::from_value("my-topic", buf));
+    //         match result {
+    //             Ok(_) => {
+    //                 println!("OK");
+    //             }
+    //             Err(_) => {
+    //                 println!("Error: ");
+    //             }
+    //         }
+    //     }
+    //     _ => println!("error")
+    // }
 
 
 

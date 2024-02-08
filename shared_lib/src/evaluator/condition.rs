@@ -2,7 +2,6 @@ use std::collections::HashMap;
 
 use super::super::record_mapping_types::field_values::FieldValue;
 
-use super::operator;
 use super::{condition_type::ConditionType, operator::Operator};
 use serde_derive::{Deserialize, Serialize};
 

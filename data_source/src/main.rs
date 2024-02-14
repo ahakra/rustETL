@@ -6,12 +6,18 @@ pub mod traits;
 use std::thread::sleep;
 use std::time::Duration;
 use std::io::Write ;
-use std::sync::Arc;
 use std::fs::OpenOptions;
 use std::io;
+use rdkafka::ClientConfig;
 use tokio;
 use commands::{on_directory_list_command::OnDirectoryListCommand, on_file_read_command::OnFileReadCommand, on_records_map_command::OnRecordMapCommand};
 use crate::traits::event_trait::StorableEvent;
+
+use kafka::producer::{AsBytes, Producer, Record, RequiredAcks};
+use std::sync::{Arc, Mutex};
+use rdkafka::admin::{AdminClient, AdminOptions, NewTopic, TopicReplication};
+use rdkafka::client::DefaultClientContext;
+use kafka::consumer::{Consumer, FetchOffset, GroupOffsetStorage};
 
 fn append_to_event_store(event: impl StorableEvent) -> Result<(), io::Error> {
     let mut file = OpenOptions::new()
@@ -25,6 +31,34 @@ fn append_to_event_store(event: impl StorableEvent) -> Result<(), io::Error> {
 }
 #[tokio::main]
 async  fn main() {
+    
+   
+  
+    let producer = Arc::new(Mutex::new(
+        Producer::from_hosts(vec!["localhost:9092".to_owned()])
+            .with_ack_timeout(Duration::from_secs(1))
+            .with_required_acks(RequiredAcks::One)
+            .create(),
+    ));
+
+    let mut consumer = Consumer::from_hosts(vec!("localhost:9092".to_owned()))
+    .with_topic("your_topic".to_string())
+    .create()
+    .expect("Error creating Kafka consumer");
+
+ 
+       let var_name = async {
+        loop {
+        for ms in consumer.poll().unwrap().iter() {
+            for m in ms.messages() {
+            println!("{:?}", m);
+            }
+            consumer.consume_messageset(ms);
+        }
+        consumer.commit_consumed().unwrap();
+        }
+    };
+
     let _ = helpers::crud_service::delete().await;
     let _ = helpers::crud_service::register().await;
 
@@ -98,8 +132,37 @@ async  fn main() {
 
                         let arc_event = Arc::new(record_mapped_event.as_ref().unwrap());
                         if let Err(err) = append_to_event_store((*arc_event).clone()) {
+                         
                             eprintln!("Error storing event: {}", err);
                         }
+
+                        let  buf = serde_json::to_vec(&record_mapped_event.as_ref().unwrap().fields).unwrap();
+                        
+                        
+                        match producer.lock() {
+                            Ok(mut guard) => {
+                                // Use the producer here
+                                match &mut *guard {
+                                    Ok(producer) => {
+                                        // Use the producer here
+                                        let result = producer.send(&Record::from_value("your_topic", buf));
+                                        match result {
+                                            Err(err)=>{eprintln!("Error sending topic: {:?}",err);}
+                                            Ok(result) => {println!("topic sent: {:?}",result);}
+                                    }
+                                    }
+                                    Err(err) => {
+                                        eprintln!("Error creating producer: {:?}", err);
+                                        // Handle the error as needed
+                                    }
+                                }
+                            }
+                            Err(err) => {
+                                eprintln!("Error acquiring lock on producer: {}", err);
+                                // Handle the error as needed
+                            }
+                        }
+
                         record_mapped_event.map(|event| {
                             helpers::move_file::move_file(&sftp_config,event.file_name);
                         }).unwrap_or_else(|err| {
@@ -115,9 +178,10 @@ async  fn main() {
             } else{
                 println!("No files in directory");
             }
-            tokio::time::sleep(tokio::time::Duration::from_secs(30)).await;
+            tokio::time::sleep(tokio::time::Duration::from_secs(5)).await;
 
     }
 
     }
 
+   

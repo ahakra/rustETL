@@ -8,16 +8,16 @@ use std::time::Duration;
 use std::io::Write ;
 use std::fs::OpenOptions;
 use std::io;
-use rdkafka::ClientConfig;
+
 use tokio;
 use commands::{on_directory_list_command::OnDirectoryListCommand, on_file_read_command::OnFileReadCommand, on_records_map_command::OnRecordMapCommand};
 use crate::traits::event_trait::StorableEvent;
 
-use kafka::producer::{AsBytes, Producer, Record, RequiredAcks};
+use kafka::{consumer::GroupOffsetStorage, producer::{Producer, Record, RequiredAcks}};
 use std::sync::{Arc, Mutex};
-use rdkafka::admin::{AdminClient, AdminOptions, NewTopic, TopicReplication};
-use rdkafka::client::DefaultClientContext;
-use kafka::consumer::{Consumer, FetchOffset, GroupOffsetStorage};
+
+
+use kafka::consumer::{Consumer, FetchOffset};
 
 fn append_to_event_store(event: impl StorableEvent) -> Result<(), io::Error> {
     let mut file = OpenOptions::new()
@@ -35,25 +35,40 @@ async  fn main() {
    
   
     let producer = Arc::new(Mutex::new(
-        Producer::from_hosts(vec!["localhost:9092".to_owned()])
+        Producer::from_hosts(vec!["127.0.0.1:9092".to_owned()])
             .with_ack_timeout(Duration::from_secs(1))
             .with_required_acks(RequiredAcks::One)
             .create(),
     ));
 
-    let mut consumer = Consumer::from_hosts(vec!("localhost:9092".to_owned()))
-    .with_topic("your_topic".to_string())
-    .create()
-    .expect("Error creating Kafka consumer");
+  
+let mut consumer =
+                    Consumer::from_hosts(vec!("127.0.0.1:9092".to_owned()))
+                    .with_topic_partitions("cdr".to_owned(), &[0, 1])
+                    .with_fallback_offset(FetchOffset::Earliest)
+                    .with_group("cdr".to_owned())
+                    .with_offset_storage(Some(GroupOffsetStorage::Kafka))
+                    .create()
+                    .unwrap();
+                    loop {
+                    for ms in consumer.poll().unwrap().iter() {
+                    for m in ms.messages() {
+                    println!("{:?}", m);
+                    }
+                    consumer.consume_messageset(ms);
+                    }
+                    consumer.commit_consumed().unwrap();
+                    }
 
  
-       let var_name = async {
+       let _var_name = async {
         loop {
         for ms in consumer.poll().unwrap().iter() {
+            println!("message received");
             for m in ms.messages() {
             println!("{:?}", m);
             }
-            consumer.consume_messageset(ms);
+            let _ = consumer.consume_messageset(ms);
         }
         consumer.commit_consumed().unwrap();
         }
